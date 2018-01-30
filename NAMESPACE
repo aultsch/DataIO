@@ -1,0 +1,6 @@
+exportPattern("^[[:alpha:]]+")
+#importFrom("digest",digest)
+importFrom("tools",file_ext)
+importFrom("stats", "complete.cases")
+importFrom("utils", "read.table", "write.table","installed.packages")
+importFrom("grDevices", "colours")

@@ -1,0 +1,12 @@
+Package: dbt.DataIO
+Type: Package
+Title: IO Handling for Files Containing Data 
+Version: 2.2.3
+Date: 2017-12-24
+Author: Michael Thrun, Felix Pape, Florian Lerch, Tim Schneider
+Maintainer: Michael Thrun <mthrun@mathematik.uni-marburg.de>
+Description: Functions for writing and reading data are being provided in the DataIO package, which specializes on [n,k] matrices and data frames. The file format with the extension *.data enables the user to import data to Microsoft Excel and Mathworks Matlab. Furthermore it allows for inspecting and editing data with any text editor. To prevent failure which for example might occur during unintentional alteration of the *.data file in Excel or an editor, the files are verified by a checksum for each column of data.
+Imports: tools
+Suggests: digest, Matrix, tcltk 
+License: CC BY-NC-SA 4.0
+URL: https://www.uni-marburg.de/fb12/datenbionik/software-en
