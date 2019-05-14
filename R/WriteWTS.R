@@ -1,4 +1,4 @@
-WriteWTS = function(FileName,wts, OutDirectory=getwd(), Lines=NULL,Columns=NULL, IsToroid=0,Comment){
+WriteWTS = function(FileName,wts, OutDirectory=getwd(), Lines=NULL,Columns=NULL, IsToroid=0,Comment,Header=c()){
 #
 # Save ESOM weights to a *.wts file
 # 
@@ -16,10 +16,11 @@ WriteWTS = function(FileName,wts, OutDirectory=getwd(), Lines=NULL,Columns=NULL,
 # Comment                   array of characters to be written in the first line of the file, it 
 #  										      will be marked with '\#', more than one line, use '\n#'
 #                           Not More than 3 seperate Lines of Comments allowed
+# Header                    Names of variables represented by weights
 #
 
 # author: FL/MT 07/2015
-  
+
 
 # jump to the output directory
 filename=addext(FileName,'wts')
@@ -68,14 +69,28 @@ if(height!=Lines*Columns){
 # write the header
 header1 <- paste0('%',Lines,"\t",Columns, "\t", IsToroid) # size of the matrix that was used
 header2 <- paste0('%',"\t",ncol(wts)) # dimensions of bestmatches/projections and the used topology
-header3 <- paste0('%',"\t", paste(rep('1',ncol(wts)), collapse="\t")) # Headers; every header is just a 1
-header = c(header1,header2,header3)
+header3 <- paste0('%',"\t", paste(rep('1',ncol(wts)+2), collapse="\t")) # DataDefined; 
+
+
+# Fl: add optional header (column names)
+if(is.null(Header)) header4 <- paste0('%', '\t', paste(rep('1',ncol(wts)), collapse="\t"))
+else if(length(Header)!=ncol(wts)) stop("Header does not match the columns of wts")
+else{
+  for(i in 1:length(Header))
+    Header[i]=sub(' ','',Header[i]) #Blanks ersetzen
+  header4 <- paste0('%', paste0(Header, collapse="\t"))
+}
+
+headlines = c(header1,header2,header3, header4)
+
+# FL: add grid position to table
+#WtsWithPosition = cbind(wts, expand.grid(1:Lines, 1:Columns))
 
     if(missing(Comment)){
-        write.table(header, file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE, na='NaN')
+        write.table(headlines, file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE, na='NaN')
     }else{
        write.table(paste0('# ',Comment), file=filename, quote=FALSE, sep='\t',row.names=FALSE, col.names=FALSE, na='NaN')
-       write.table(header, append=TRUE, file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE, na='NaN')
+       write.table(headlines, append=TRUE, file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE, na='NaN')
     }
 
 

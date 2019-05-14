@@ -107,12 +107,12 @@ else{
           Ind12 = sort(na.last=T,c(which(DataDefined==1),which(DataDefined==2)))
           Header1 = paste('C',1:length(Ind12),sep='')
           Header[Ind12] = Header1
-		  }
+      }
       
       ### write in file
       # write dimensions Number of lines & columns
       header = c(paste('%\t',n),paste('%\t',length(DataDefined)))
-      #MT:
+      
       if(is.character(CommentOrDigits)){
         write.table(paste0('# ',CommentOrDigits), FileName, quote=FALSE, row.names=FALSE, col.names=FALSE, na='NaN')
         write.table(header, FileName,append=TRUE, quote=FALSE,sep='\t', row.names=FALSE, col.names=FALSE, na='NaN')
@@ -134,8 +134,13 @@ else{
         warning('Beware, non numeric values found. Trying automatic Translation into numeric data mode')
         mode(Data) <-"numeric"
       }
+      
+      
+      DataFin = Data
+      DataFin[!is.finite(DataFin)] = NaN
+      
       # write data
-      write.table(Data, file=FileName, append=TRUE, quote=FALSE, sep='\t', row.names=FALSE, col.names=FALSE, na='NaN')
+      write.table(DataFin, file=FileName, append=TRUE, quote=FALSE, sep='\t', row.names=FALSE, col.names=FALSE, na='NaN')
 
 }
 

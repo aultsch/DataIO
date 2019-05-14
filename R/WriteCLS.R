@@ -1,4 +1,4 @@
-WriteCLS <- function(FileName, Cls, OutDirectory=getwd(),Key=c() ,Comment=0){
+WriteCLS <- function(FileName, Cls, OutDirectory=getwd(),Key ,Comment=0){
 # WriteCLS(FileName, Cls, OutDirectory,Key,Comment)
 # example: WriteCLS('example.cls', c(1,1,1,1,2,2,2,2,3,3,3,3), c(1,2,3,4,5,6,7,8,9,10,11,12), getwd())
 
@@ -19,12 +19,15 @@ WriteCLS <- function(FileName, Cls, OutDirectory=getwd(),Key=c() ,Comment=0){
 # $Author: ALU 2008
 # HeSa DokuCheck Feb14
 # 1.Editor: MT Mai2014
+# 2.Editor MT 2018
 
 
 filename=addext(FileName,'cls')
 CurrentDir = getwd()
 setwd(OutDirectory)
 
+if(missing(Key)) 
+  Key=1:length(Cls)
 
 newcls=Cls
 if (is.data.frame(Cls)||is.matrix(Cls)) {
@@ -38,7 +41,10 @@ if (is.data.frame(Cls)||is.matrix(Cls)) {
     else if (length(Key)!=nrow(Cls))  Key=1:nrow(Cls)
     }
 if (is.vector(Cls) ) { n=length(Cls)
-                       if( length(Key)!=length(Cls)) Key=1:length(Cls)
+
+                       if( length(Key)!=length(Cls)) 
+                         stop('Key has not the length of Cls')
+
                      }
 Cls=newcls
 if(is.character(Comment)){
